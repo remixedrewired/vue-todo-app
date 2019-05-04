@@ -1,39 +1,45 @@
 <template>
-  <div class="todo-item" v-bind:class="{'is-complete': todo.completed}">
+  <div class="todo" @dblclick="onDblClick(todo)">
     <p>
-      <input type="checkbox" v-on:change="markComplete" :checked="todo.completed">
       {{todo.title}}
-      <button class="del" @click="$emit('del-todo', todo.id)">x</button>
+      <i @click="deleteTodo(todo.id)" class="fas fa-trash-alt"></i>
     </p>
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "TodoItem",
   props: ["todo"],
   methods: {
-    markComplete() {
-      this.todo.completed = !this.todo.completed;
+    ...mapActions(["deleteTodo", "updateTodo"]),
+    onDblClick(todo) {
+      const updTodo = {
+        ...todo,
+        completed: !todo.completed
+      };
+      console.log("TCL: onDblClick -> updTodo", updTodo);
+      this.updateTodo(updTodo);
     }
   }
 };
 </script>
 <style scoped>
-.todo-item {
-  background: #f4f4f4;
-  padding: 10px;
-  border-bottom: 1px #ccc dotted;
-}
-.is-complete {
-  text-decoration: line-through;
-}
-.del {
-  background: #ff0000;
-  color: #fff;
-  border: none;
-  padding: 5px 9px;
-  border-radius: 50%;
+.todo {
+  border: 1px solid #ccc;
+  background: #41b883;
+  padding: 1rem;
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
   cursor: pointer;
-  float: right;
+}
+i {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #fff;
+  cursor: pointer;
 }
 </style>

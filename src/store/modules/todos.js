@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import axios from "axios";
 
 const state = {
@@ -7,6 +8,7 @@ const state = {
 const getters = {
   allTodos: (state) => state.todos,
 };
+
 const actions = {
   async fetchTodos({ commit }) {
     const response = await axios.get(
@@ -15,7 +17,7 @@ const actions = {
 
     commit("setTodos", response.data);
   },
-  async AudioDestinationNode({ commit }, title) {
+  async addTodo({ commit }, title) {
     const response = await axios.post(
       "https://jsonplaceholder.typicode.com/todos",
       { title, completed: false },
@@ -33,9 +35,6 @@ const actions = {
       `https://jsonplaceholder.typicode.com/todos/${updTodo.id}`,
       updTodo,
     );
-
-    console.log(response.data);
-
     commit("updateTodo", response.data);
   },
   async filterTodos({ commit }, e) {
